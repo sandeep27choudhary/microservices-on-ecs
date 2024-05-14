@@ -3,7 +3,7 @@ name: 'Terragrunt CI'
 on:
   push:
     branches:
-    - master
+    - main
 
 jobs:
   Terragrunt:
