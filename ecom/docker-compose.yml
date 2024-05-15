@@ -1,0 +1,27 @@
+# docker-compose.yml
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - ecom_network
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    networks:
+      - ecom_network
+
+  inventory:
+    build: ./inventory
+    ports:
+      - "5000:5000"
+    networks:
+      - ecom_network
+
+networks:
+  ecom_network:
+    driver: bridge
