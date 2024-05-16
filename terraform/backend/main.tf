@@ -10,7 +10,6 @@ module "ecs_task_execution_role" {
   iam_policy_arn = var.ecs_task_execution_role.iam_policy_arn
 }
 
-## --------------------------------------------------------------------------- ##
 
 resource "aws_ecs_task_definition" "ecs_task" {
   family                = var.ecs_task.family
@@ -38,52 +37,13 @@ resource "aws_ecs_service" "ecs_service" {
   launch_type     = var.ecs_service.launch_type
   desired_count   = var.ecs_service.desired_count
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.micro_services.arn
-    container_name   = var.ecs_task.container_image_name
-    container_port   = var.ecs_task.container_image_port
-  }
-
   network_configuration {
     assign_public_ip = false
-
-    security_groups = [
-      var.ecs_service.egress_all_id,
-      aws_security_group.ingress_api.id,
-    ]
 
     subnets = var.ecs_service.private_subnets
   }
 }
 
-resource "aws_lb_target_group" "micro_services" {
-  name        = "micro-services"
-  port        = var.ecs_task.container_image_port
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = var.vpc_id
-
-  health_check {
-    enabled = true
-    path    = "/"
-  }
-}
-
-
-resource "aws_security_group" "ingress_api" {
-  name        = "ingress-api"
-  description = "Allow ingress to API"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = var.ecs_task.container_image_port
-    to_port     = var.ecs_task.container_image_port
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-## --------------------------------------------------------------------------- ##
 
 module "ecs_autoscale_role" {
   source = "../service_role"

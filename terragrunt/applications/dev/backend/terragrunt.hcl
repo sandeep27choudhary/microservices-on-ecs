@@ -11,7 +11,7 @@ include "stage" {
 locals {
   # merge tags
   local_tags = {
-    "Name" = "ecs-application"
+    "Name" = "backend"
   }
 
   tags = merge(include.root.locals.root_tags, include.stage.locals.tags, local.local_tags)
@@ -35,14 +35,6 @@ dependency "ecs_cluster" {
   }
 }
 
-dependency "aws_alb" {
-  config_path                             = "${get_parent_terragrunt_dir("root")}/base-infrastructure/${include.stage.locals.stage}/aws_alb"
-  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
-  mock_outputs = {
-    aws_alb_arn          = "arn:aws:elasticloadbalancing:ap-south-1:643202173500:loadbalancer/app/microservices-alb/9XXX000XXX000XXX"
-    aws_sg_egress_all_id = "some-id"
-  }
-}
 
 
 generate "provider_global" {
@@ -74,7 +66,7 @@ inputs = {
       type        = "Service"
       identifiers = ["ecs-tasks.amazonaws.com"]
     }
-    iam_role_name = "task-execution-role"
+    iam_role_name = "backend-task-execution-role"
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   }
 
@@ -85,15 +77,15 @@ inputs = {
       type        = "Service"
       identifiers = ["application-autoscaling.amazonaws.com"]
     }
-    iam_role_name = "ecs-scale-application"
+    iam_role_name = "backend-ecs-scale-application"
     iam_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
   }
 
   ecs_task = {
-    family                   = "ecs-task-family"
-    container_image_name     = "microservices"
+    family                   = "backend"
+    container_image_name     = "backend"
     container_image          = "nginx:latest"
-    container_image_port     = 80
+    container_image_port     = 3000
     cpu                      = 256
     memory                   = 512
     requires_compatibilities = ["FARGATE"]
@@ -101,18 +93,16 @@ inputs = {
   }
 
   ecs_service = {
-    name            = "ecs_service"
+    name            = "backend"
     cluster         = dependency.ecs_cluster.outputs.aws_ecs_cluster_id
     launch_type     = "FARGATE"
     desired_count   = 3
-    egress_all_id   = dependency.aws_alb.outputs.aws_sg_egress_all_id
     private_subnets = dependency.vpc.outputs.vpc_private_subnets_ids
   }
 
   vpc_id  = dependency.vpc.outputs.vpc_id
-  alb_arn = dependency.aws_alb.outputs.aws_alb_arn
 }
 
 terraform {
-  source = "${get_parent_terragrunt_dir("root")}/..//terraform/ecs_application"
+  source = "${get_parent_terragrunt_dir("root")}/..//terraform/backend"
 }

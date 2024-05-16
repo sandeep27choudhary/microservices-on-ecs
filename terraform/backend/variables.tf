@@ -30,7 +30,6 @@ variable "ecs_service" {
     cluster         = string
     launch_type     = string
     desired_count   = number
-
     private_subnets = list(string)
   })
 }
