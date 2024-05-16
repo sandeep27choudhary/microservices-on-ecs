@@ -46,3 +46,12 @@ jobs:
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/inventory:latest
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      # Add steps to update ECS task definitions and restart services
+      - name: Update ECS task definitions and restart services
+        run: |
+          aws ecs update-service --cluster ecs-cluster --service frontend --force-new-deployment
+          aws ecs update-service --cluster ecs-cluster --service backend --force-new-deployment
+          aws ecs update-service --cluster ecs-cluster --service inventory --force-new-deployment
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
