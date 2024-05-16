@@ -12,13 +12,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push frontend Docker image
         run: |
-          docker build -t frontend-image ./frontend
+          docker build -t frontend-image ./ecom/frontend
           docker tag frontend-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend-image:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
         env:
@@ -26,7 +33,7 @@ jobs:
 
       - name: Build and push backend Docker image
         run: |
-          docker build -t backend-image ./backend
+          docker build -t backend-image ./ecom/backend
           docker tag backend-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend-image:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend:latest
         env:
@@ -34,7 +41,7 @@ jobs:
 
       - name: Build and push inventory Docker image
         run: |
-          docker build -t inventory-image ./inventory
+          docker build -t inventory-image ./ecom/inventory
           docker tag inventory-image:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/inventory-image:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/inventory:latest
         env:
