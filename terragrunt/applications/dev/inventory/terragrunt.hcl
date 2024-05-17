@@ -108,7 +108,7 @@ inputs = {
     private_subnets = dependency.vpc.outputs.vpc_private_subnets_ids
   }
 
-  backend_sg = dependency.backend_sg.outputs.backend_sg
+  backend_sg = dependency.backend_sg.outputs.backend_security_group_id
   vpc_id  = dependency.vpc.outputs.vpc_id
 }
 
