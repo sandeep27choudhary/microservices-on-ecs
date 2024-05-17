@@ -23,14 +23,14 @@ resource "aws_ecs_task_definition" "ecs_task" {
       containerPort     = var.ecs_task.container_image_port
     }]
 
-    logConfiguration = [{
-      logDriver = awslogs,
+    logConfiguration = {
+      logDriver = "awslogs"
       options = {
-        awslogs-group = "/fargate/service/${var.ecs_task.family}"
-        awslogs-region = ap-south-1
-        awslogs-stream-prefix = var.ecs_task.family
+        "awslogs-group" = "/fargate/service/${var.ecs_task.family}"
+        "awslogs-region" = "ap-south-1"
+        "awslogs-stream-prefix" = var.ecs_task.family
       }
-    }]
+    }
 
   }])
   cpu                 = var.ecs_task.cpu
