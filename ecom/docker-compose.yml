@@ -1,27 +1,37 @@
-# docker-compose.yml
-version: '3'
+version: '3.8'
+
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "80:80"
-    networks:
-      - ecom_network
+    depends_on:
+      - backend
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    depends_on:
+      - inventory
+    environment:
+      - INVENTORY_SERVICE_URL=http://inventory:5000
     networks:
-      - ecom_network
+      - my_network
 
   inventory:
-    build: ./inventory
+    build:
+      context: ./inventory
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     networks:
-      - ecom_network
+      - my_network
 
 networks:
-  ecom_network:
+  my_network:
     driver: bridge

@@ -1,4 +1,4 @@
-# app.py (Inventory Service)
+# inventory_service.py
 from flask import Flask, jsonify
 
 app = Flask(__name__)

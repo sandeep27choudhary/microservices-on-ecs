@@ -1,4 +1,11 @@
-# frontend/Dockerfile
+# Use a base image with a simple web server
 FROM nginx:alpine
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY dist /usr/share/nginx/html
+
+# Copy the HTML file to the nginx html directory
+COPY index.html /usr/share/nginx/html/index.html
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx server
+CMD ["nginx", "-g", "daemon off;"]
