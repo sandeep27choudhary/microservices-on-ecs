@@ -1,24 +1,22 @@
 # Microservices on ECS
 
-This repository contains an example of deploying microservices on AWS ECS (Elastic Container Service). The project includes a frontend service, a backend service, and an inventory service, demonstrating a complete microservices architecture.
+This repository contains an example of deploying microservices on AWS ECS (Elastic Container Service) using Docker and Terragrunt for Terraform management. The project includes a frontend service, a backend service, and an inventory service, demonstrating a complete microservices architecture.
 
 ## Table of Contents
 
-- [Microservices on ECS](#microservices-on-ecs)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Services](#services)
-    - [Frontend Service](#frontend-service)
-    - [Backend Service](#backend-service)
-    - [Inventory Service](#inventory-service)
-  - [Setup](#setup)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Running Locally](#running-locally)
-    - [Deploying to AWS ECS](#deploying-to-aws-ecs)
-  - [Usage](#usage)
-  - [Contributing](#contributing)
-  - [License](#license)
+- [Overview](#overview)
+- [Services](#services)
+  - [Frontend Service](#frontend-service)
+  - [Backend Service](#backend-service)
+  - [Inventory Service](#inventory-service)
+- [Setup](#setup)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running Locally](#running-locally)
+  - [Deploying to AWS ECS](#deploying-to-aws-ecs)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Overview
 
@@ -57,7 +55,8 @@ This project demonstrates a simple microservices architecture deployed on AWS EC
 - Docker
 - Docker Compose
 - AWS CLI configured with necessary permissions
-- Terraform and Terragrunt (optional, if infrastructure as code is used)
+- Terraform
+- Terragrunt
 
 ### Installation
 
@@ -66,3 +65,35 @@ This project demonstrates a simple microservices architecture deployed on AWS EC
 ```bash
 git clone https://github.com/sandeep27choudhary/microservices-on-ecs.git
 cd microservices-on-ecs
+```
+# Running Locally
+## To run the services locally using Docker Compose:
+Build and start the containers:
+```bash
+cd ecom/
+docker-compose up --build
+```
+#On AWS
+###to run on cloud
+push image to ecr:
+```bash
+aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com
+docker build -t frontend ./frontend
+docker tag frontend:latest <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/frontend:latest
+docker push <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/frontend:latest
+
+docker build -t backend ./backend
+docker tag backend:latest <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/backend:latest
+docker push <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/backend:latest
+
+docker build -t inventory ./inventory
+docker tag inventory:latest <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/inventory:latest
+docker push <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com/inventory:latest
+
+cd terragrunt
+terragrunt run-all init
+terragrunt run-all plan
+terragrunt run-all apply
+terragrunt run-all destroy ## to destroy the resources
+```
+
