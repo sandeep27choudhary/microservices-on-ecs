@@ -27,6 +27,14 @@ dependency "vpc" {
   }
 }
 
+dependency "backend-sg" {
+  config_path                             = "${get_parent_terragrunt_dir("root")}/base-infrastructure/${include.stage.locals.stage}/backend"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs = {
+    backend_sg = "some_id"
+  }
+}
+
 dependency "ecs_cluster" {
   config_path                             = "${get_parent_terragrunt_dir("root")}/base-infrastructure/${include.stage.locals.stage}/ecs_cluster"
   mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
@@ -100,6 +108,7 @@ inputs = {
     private_subnets = dependency.vpc.outputs.vpc_private_subnets_ids
   }
 
+  backend_sg = dependency.backend.outputs.backend_sg
   vpc_id  = dependency.vpc.outputs.vpc_id
 }
 
