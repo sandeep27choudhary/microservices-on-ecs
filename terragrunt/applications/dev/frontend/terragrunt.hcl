@@ -101,7 +101,7 @@ inputs = {
   }
 
   ecs_service = {
-    name            = "ecs_service"
+    name            = "frontend"
     cluster         = dependency.ecs_cluster.outputs.aws_ecs_cluster_id
     launch_type     = "FARGATE"
     desired_count   = 3
