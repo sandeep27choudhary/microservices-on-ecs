@@ -24,6 +24,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
       containerPort     = var.ecs_task.container_image_port
     }]
   }])
+    
   cpu                 = var.ecs_task.cpu
   memory              = var.ecs_task.memory
   requires_compatibilities = var.ecs_task.requires_compatibilities
