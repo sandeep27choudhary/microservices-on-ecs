@@ -1,3 +1,8 @@
+module "aws_cloudwatch_log_group" {
+  source = "../cloudwatch"
+  log_group_name = var.ecs_task.family
+}
+
 module "ecs_task_execution_role" {
   source = "../service_role"
   policy_document = {
@@ -22,6 +27,14 @@ resource "aws_ecs_task_definition" "ecs_task" {
     portMappings = [{
       containerPort     = var.ecs_task.container_image_port
     }]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group" = "/fargate/service/${var.ecs_task.family}"
+        "awslogs-region" = "ap-south-1"
+        "awslogs-stream-prefix" = var.ecs_task.family
+      }
+    }
   }])
   cpu                 = var.ecs_task.cpu
   memory              = var.ecs_task.memory
