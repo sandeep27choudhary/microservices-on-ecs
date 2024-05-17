@@ -10,7 +10,7 @@ resource "aws_security_group" "inventory_sg" {
     from_port       = 5000  # Assuming inventory service runs on port 5000
     to_port         = 5000
     protocol        = "tcp"
-    security_groups = [aws_security_group.backend_sg.id]
+    security_groups = [var.backend_sg]
   }
 
   # Outbound rule to allow egress traffic
