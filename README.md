@@ -14,9 +14,6 @@ This repository contains an example of deploying microservices on AWS ECS (Elast
   - [Installation](#installation)
   - [Running Locally](#running-locally)
   - [Deploying to AWS ECS](#deploying-to-aws-ecs)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Overview
 
@@ -73,8 +70,8 @@ Build and start the containers:
 cd ecom/
 docker-compose up --build
 ```
-#On AWS
-###to run on cloud
+# Deploying to AWS ECS 
+
 push image to ecr:
 ```bash
 aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-aws-account-id>.dkr.ecr.<your-region>.amazonaws.com
