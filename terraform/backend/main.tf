@@ -1,3 +1,8 @@
+module "aws_cloudwatch_log_group" {
+  source = "../cloudwatch"
+  log_group_name = var.ecs_task.family
+}
+
 module "ecs_task_execution_role" {
   source = "../service_role"
   policy_document = {
