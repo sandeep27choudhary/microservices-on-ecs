@@ -28,7 +28,7 @@ dependency "vpc" {
 }
 
 dependency "backend-sg" {
-  config_path                             = "${get_parent_terragrunt_dir("root")}/base-infrastructure/${include.stage.locals.stage}/backend"
+  config_path                             = "${get_parent_terragrunt_dir("root")}/applications/${include.stage.locals.stage}/backend"
   mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
   mock_outputs = {
     backend_sg = "some_id"
