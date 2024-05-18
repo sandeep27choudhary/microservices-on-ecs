@@ -38,8 +38,13 @@ jobs:
           wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
           chmod +x bin/terragrunt
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+      
+      - name: Initialise tf for production
+        run: |
+          cd terragrunt/
+          terragrunt run-all init --terragrunt-non-interactive
 
-      - name: Apply All production
+      - name: Production Deploy/Plan
         run: |
           cd terragrunt/
           terragrunt run-all ${{inputs.tf_function}} --terragrunt-non-interactive
