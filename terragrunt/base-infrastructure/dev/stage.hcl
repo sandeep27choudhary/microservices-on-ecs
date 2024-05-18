@@ -3,6 +3,6 @@ locals {
 
   tags = {
     environment = local.stage
-    developer   = "ali"
+    developer   = "sandeep"
   }
 }
