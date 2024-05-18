@@ -1,15 +1,12 @@
-name: "Apply Production"
+name: "Destroy Production"
 
 on:
   workflow_dispatch:
     inputs:
-      tf_function:
+      destroy:
         type: string
-        description: "plan or apply"
+        description: "true or false"
 
-  # push:
-  #   branches:
-  #     - main
 
 env:
   TERRAFORM_VERSION: 1.8.0
@@ -41,6 +38,7 @@ jobs:
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Apply All production
+        if: ${{inputs.destroy}} == true
         run: |
           cd terragrunt/
-          terragrunt run-all ${{inputs.tf_function}} --terragrunt-non-interactive
+          terragrunt run-all destroy --terragrunt-non-interactive
