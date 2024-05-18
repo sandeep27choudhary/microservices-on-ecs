@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       destroy:
-        type: string
-        description: "true or false"
+        type: boolean
+        description: "Are you sure you want to destroy Everything"
 
 
 env:
