@@ -22,6 +22,14 @@ resource "aws_security_group" "egress_all" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    description = "Allow outbound traffic to backend service"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_alb" "application_load_balancer" {
