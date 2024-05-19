@@ -31,7 +31,7 @@ dependency "backend_sg" {
   config_path                             = "${get_parent_terragrunt_dir("root")}/applications/${include.stage.locals.stage}/backend"
   mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
   mock_outputs = {
-    backend_sg = "some_id"
+    backend_security_group_id = "some_id"
   }
 }
 
