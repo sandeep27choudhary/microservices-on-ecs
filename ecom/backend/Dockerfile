@@ -1,20 +1,20 @@
-# Use the official Node.js image as a base image
+# Use the official Node.js image as the base image
 FROM node:alpine
 
-# Create and change to the app directory
+# Set the working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package.json .
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application
+# Copy the rest of the application files
 COPY . .
 
 # Expose port 3000
 EXPOSE 3000
 
-# Start the server
+# Start the application
 CMD ["node", "server.js"]

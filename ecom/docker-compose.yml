@@ -4,34 +4,19 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
     ports:
       - "80:80"
     depends_on:
       - backend
-
+  
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    depends_on:
-      - inventory
-    environment:
-      - INVENTORY_SERVICE_URL=http://inventory:5000
-    networks:
-      - my_network
 
   inventory:
     build:
       context: ./inventory
-      dockerfile: Dockerfile
     ports:
       - "5000:5000"
-    networks:
-      - my_network
-
-networks:
-  my_network:
-    driver: bridge
