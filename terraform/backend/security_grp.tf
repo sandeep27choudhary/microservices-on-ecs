@@ -7,14 +7,22 @@ resource "aws_security_group" "backend_sg" {
   vpc_id      = var.vpc_id
 
   # Inbound rule to allow traffic from the frontend service
-  ingress {
-    from_port   = 3000  # Assuming backend service runs on port 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+ ingress {
+    description   = "Allow traffic from frontend service"
+    from_port     = 80
+    to_port       = 80
+    protocol      = "tcp"
+    security_groups = [aws_security_group.frontend_sg.id]
   }
 
-  # Outbound rule to allow egress traffic
+  ingress {
+    description   = "Allow traffic from inventory service"
+    from_port     = 5000
+    to_port       = 5000
+    protocol      = "tcp"
+    security_groups = [aws_security_group.inventory_sg.id]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
