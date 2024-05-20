@@ -35,6 +35,13 @@ dependency "ecs_cluster" {
   }
 }
 
+dependency "inventory" {
+  config_path                             = "${get_parent_terragrunt_dir("root")}/applications/${include.stage.locals.stage}/inventory"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs = {
+    inventory_sg_id                  = "some_id"
+  }
+}
 
 
 generate "provider_global" {
