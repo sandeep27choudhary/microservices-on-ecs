@@ -12,7 +12,7 @@ resource "aws_security_group" "backend_sg" {
     from_port     = 80
     to_port       = 80
     protocol      = "tcp"
-    security_groups = [aws_security_group.ingress_api.id]
+    cidr_blocks =  ["0.0.0.0/0"]
   }
 
   ingress {
@@ -20,7 +20,7 @@ resource "aws_security_group" "backend_sg" {
     from_port     = 5000
     to_port       = 5000
     protocol      = "tcp"
-    security_groups = [aws_security_group.inventory-sg.id]
+    security_groups = [var.inventory_sg_id]
   }
 
   egress {

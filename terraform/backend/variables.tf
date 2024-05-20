@@ -10,6 +10,9 @@ variable "ecs_task_execution_role" {
     iam_policy_arn = string
   })
 }
+variable "inventory_sg_id" {
+  type = string
+}
 
 variable "ecs_task" {
   type = object({

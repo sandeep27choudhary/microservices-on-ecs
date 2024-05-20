@@ -101,6 +101,7 @@ inputs = {
   }
 
   vpc_id  = dependency.vpc.outputs.vpc_id
+  inventory_sg_id = dependency.inventory.outputs.inventory_security_group_id
 }
 
 terraform {

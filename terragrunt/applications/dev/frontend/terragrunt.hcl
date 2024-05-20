@@ -17,6 +17,14 @@ locals {
   tags = merge(include.root.locals.root_tags, include.stage.locals.tags, local.local_tags)
 }
 
+dependency "inventory" {
+  config_path                             = "${get_parent_terragrunt_dir("root")}/base-infrastructure/${include.stage.locals.stage}/inventory"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs = {
+    inventory_sg_id                  = "some_id"
+  }
+}
+
 dependency "vpc" {
   config_path                             = "${get_parent_terragrunt_dir("root")}/base-infrastructure/${include.stage.locals.stage}/vpc_subnet_module"
   mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
