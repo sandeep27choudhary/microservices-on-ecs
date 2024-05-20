@@ -20,7 +20,7 @@ resource "aws_security_group" "backend_sg" {
     from_port     = 5000
     to_port       = 5000
     protocol      = "tcp"
-    security_groups = [var.inventory_sg_id]
+    cidr_blocks = [ "0.0.0.0/0" ]
   }
 
   egress {
