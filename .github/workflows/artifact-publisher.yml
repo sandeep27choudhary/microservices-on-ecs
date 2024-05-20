@@ -32,7 +32,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push frontend Docker image
-        if: ${{inputs.build_image}} == "frontend" || ${{inputs.build_image}} == "all"
+        if: ${{ inputs.build_image == 'frontend' || inputs.build_image == 'all' }}
         run: |
           docker build -t frontend ./ecom/frontend
           docker tag frontend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
@@ -41,7 +41,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Build and push backend Docker image
-        if: ${{inputs.build_image}} == "backend" || ${{inputs.build_image}} == "all"
+        if: ${{ inputs.build_image == 'backend' || inputs.build_image == 'all' }}
         run: |
           docker build -t backend ./ecom/backend
           docker tag backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend:latest
@@ -50,7 +50,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Build and push inventory Docker image
-        if: ${{inputs.build_image}} == "inventory" || ${{inputs.build_image}} == "all"
+        if: ${{ inputs.build_image == 'inventory' || inputs.build_image == 'all' }}
         run: |
           docker build -t inventory ./ecom/inventory
           docker tag inventory:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/inventory:latest
