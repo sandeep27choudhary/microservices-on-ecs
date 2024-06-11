@@ -59,6 +59,8 @@ inputs = {
       search_string = "status:ok"
     }
   }
+  teams_webhook_url = "https://outlook.office.com/webhook/dummy-url"
+  slack_webhook_url = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
 
   tags = local.tags
 }
