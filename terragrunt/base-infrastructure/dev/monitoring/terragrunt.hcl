@@ -60,7 +60,7 @@ inputs = {
     }
   }
   teams_webhook_url = "https://outlook.office.com/webhook/dummy-url"
-  slack_webhook_url = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+  slack_webhook_url = getenv("SLACK_WEBHOOK_URL")
 
   tags = local.tags
 }

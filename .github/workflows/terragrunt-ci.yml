@@ -45,6 +45,8 @@ jobs:
           terragrunt run-all init --terragrunt-non-interactive
 
       - name: Production Deploy/Plan
+        env:
+          SLACK_WEBHOOK_URL : ${{ secrets.SLACK_WEBHOOK_URL}}
         run: |
           cd terragrunt/
           terragrunt run-all ${{inputs.tf_function}} --terragrunt-non-interactive
