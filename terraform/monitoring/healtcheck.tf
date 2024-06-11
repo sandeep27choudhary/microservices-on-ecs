@@ -1,3 +1,4 @@
+
 locals {
   endpoints_with_str_check   = { for name, parameters in var.endpoints : name => parameters if contains(keys(parameters), "search_string") }
   endpoints_with_https_check = { for name, parameters in var.endpoints : name => parameters if !contains(keys(parameters), "search_string") }
@@ -7,6 +8,7 @@ locals {
 
 # Route 53 health-checks
 resource "aws_route53_health_check" "https_check" {
+  for_each = local.endpoints_with_https_check
   fqdn              = each.value.fqdn
   reference_name    = each.key
   port              = each.value.port
@@ -21,7 +23,7 @@ resource "aws_route53_health_check" "https_check" {
 }
 
 resource "aws_route53_health_check" "https_str_check" {
-  for_each          = local.endpoints_with_str_check
+  for_each = local.endpoints_with_str_check
   fqdn              = each.value.fqdn
   reference_name    = each.key
   port              = each.value.port
@@ -57,7 +59,7 @@ resource "aws_cloudwatch_metric_alarm" "endpoint_hc_alarm" {
 
 data "archive_file" "notifications_lambda_zip" {
   type        = "zip"
-  source_file = "${path.root}/files/lambdas/healthcheck.py"
+  source_file = "../lambdas/healthcheck.py"
   output_path = "/tmp/healthcheck.zip"
 }
 
@@ -82,7 +84,6 @@ resource "aws_lambda_function" "notifications_lambda" {
   filename         = data.archive_file.notifications_lambda_zip.output_path
   source_code_hash = data.archive_file.notifications_lambda_zip.output_base64sha256
   function_name    = "health-check-notifications"
-  # handler - <python filename>.<handler function name>
   handler = "healthcheck.handler"
   runtime = "python3.7"
   role    = aws_iam_role.notifications_lambda_role[0].arn
@@ -95,7 +96,7 @@ resource "aws_lambda_function" "notifications_lambda" {
   }
 
   lifecycle {
-    ignore_changes = [source_code_hash, last_modified]
+    ignore_changes = [source_code_hash]
   }
 }
 
@@ -133,7 +134,6 @@ resource "aws_iam_role_policy_attachment" "lambda_role_attached_policy" {
   policy_arn = aws_iam_policy.lambda_policy[0].arn
 }
 
-
 # SNS Topic for healthcheck alerts
 resource "aws_sns_topic" "alarm_sns_topic" {
   name                             = "endpoint-health-check-alarm-topic"
@@ -149,18 +149,18 @@ resource "aws_sns_topic_subscription" "lambda_topic_subscription" {
 }
 
 resource "aws_sns_topic_subscription" "email_topic_subscription" {
-  for_each  = toset(var.notification_emails)
+  for_each  = toset(var.notification_email)
   topic_arn = aws_sns_topic.alarm_sns_topic.arn
   protocol  = "email"
   endpoint  = each.value
 }
 
-resource "aws_sns_topic_subscription" "sms_topic_subscription" {
-  for_each  = toset(var.notification_mobile)
-  topic_arn = aws_sns_topic.alarm_sns_topic.arn
-  protocol  = "sms"
-  endpoint  = each.value
-}
+# resource "aws_sns_topic_subscription" "sms_topic_subscription" {
+#   for_each  = toset(var.notification_mobile)
+#   topic_arn = aws_sns_topic.alarm_sns_topic.arn
+#   protocol  = "sms"
+#   endpoint  = each.value
+# }
 
 # Feedback role
 data "aws_iam_policy_document" "feedback_assume_role_policy" {
