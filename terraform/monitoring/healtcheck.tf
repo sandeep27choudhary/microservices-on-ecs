@@ -85,7 +85,7 @@ resource "aws_lambda_function" "notifications_lambda" {
   source_code_hash = data.archive_file.notifications_lambda_zip.output_base64sha256
   function_name    = "health-check-notifications"
   handler = "healthcheck.handler"
-  runtime = "python3.7"
+  runtime = "python3.12"
   role    = aws_iam_role.notifications_lambda_role[0].arn
 
   environment {
