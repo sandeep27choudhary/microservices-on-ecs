@@ -13,4 +13,7 @@ resource "aws_lambda_function" "notifications_lambda" {
       TEAMS_WEBHOOK_URL = var.teams_webhook_url  # Pass Teams webhook URL as environment variable
     }
   }
+    lifecycle {
+    ignore_changes = [source_code_hash, last_modified]
+  }
 }
