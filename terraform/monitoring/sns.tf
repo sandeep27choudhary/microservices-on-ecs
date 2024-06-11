@@ -1,6 +1,3 @@
-# Terraform file for SNS topic
-
-# SNS Topic for healthcheck alerts
 resource "aws_sns_topic" "alarm_sns_topic" {
   name                             = "endpoint-health-check-alarm-topic"
   lambda_failure_feedback_role_arn = aws_iam_role.delivery_feedback_role.arn
@@ -26,4 +23,32 @@ resource "aws_sns_topic_subscription" "sms_topic_subscription" {
   topic_arn = aws_sns_topic.alarm_sns_topic.arn
   protocol  = "sms"
   endpoint  = each.value
+}
+
+resource "aws_iam_role" "delivery_feedback_role" {
+  name               = "SNSFeedbackRole"
+  assume_role_policy = data.aws_iam_policy_document.feedback_assume_role_policy.json
+
+  inline_policy {
+    name = "SNSFeedbackPolicy"
+
+    policy = jsonencode({
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:PutMetricFilter",
+            "logs:PutRetentionPolicy"
+          ],
+          "Resource" : [
+            "*"
+          ]
+        }
+      ]
+    })
+  }
 }

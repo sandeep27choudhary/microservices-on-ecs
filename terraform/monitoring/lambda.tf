@@ -17,3 +17,12 @@ resource "aws_lambda_function" "notifications_lambda" {
     ignore_changes = [source_code_hash, last_modified]
   }
 }
+
+resource "aws_lambda_permission" "lambda_permission" {
+  count         = local.lambda_alerts_enabled ? 1 : 0
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.notifications_lambda[0].function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.alarm_sns_topic.arn
+}

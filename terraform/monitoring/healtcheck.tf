@@ -1,5 +1,3 @@
-# Terraform module for health checks
-
 locals {
   endpoints_with_str_check   = { for name, parameters in var.endpoints : name => parameters if contains(keys(parameters), "search_string") }
   endpoints_with_https_check = { for name, parameters in var.endpoints : name => parameters if !contains(keys(parameters), "search_string") }
@@ -7,7 +5,6 @@ locals {
   lambda_alerts_enabled      = var.slack_webhook_url != "" || var.teams_webhook_url != ""
 }
 
-# Route 53 health-checks for endpoints without search string
 resource "aws_route53_health_check" "https_check" {
   for_each          = local.endpoints_with_https_check
   fqdn              = each.value.fqdn
@@ -23,7 +20,6 @@ resource "aws_route53_health_check" "https_check" {
   }
 }
 
-# Route 53 health-checks for endpoints with search string
 resource "aws_route53_health_check" "https_str_check" {
   for_each          = local.endpoints_with_str_check
   fqdn              = each.value.fqdn
@@ -40,7 +36,6 @@ resource "aws_route53_health_check" "https_str_check" {
   }
 }
 
-# Cloudwatch alarm
 resource "aws_cloudwatch_metric_alarm" "endpoint_hc_alarm" {
   for_each            = local.route53_health_checks
   alarm_name          = "${each.value.reference_name}-hc-alarm"
@@ -53,7 +48,7 @@ resource "aws_cloudwatch_metric_alarm" "endpoint_hc_alarm" {
   threshold           = "1"
   alarm_actions       = [aws_sns_topic.alarm_sns_topic.arn]
   ok_actions          = [aws_sns_topic.alarm_sns_topic.arn]
-  alarm_description   = each.value.fqdn # This is passed to lambda as endpoint value
+  alarm_description   = each.value.fqdn
   dimensions = {
     HealthCheckId = each.value.id
   }
