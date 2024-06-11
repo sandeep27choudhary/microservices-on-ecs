@@ -40,7 +40,8 @@ EOF
 }
 
 inputs = {
-  notification_emails = ["csandeep497@gmail.com"]
+  
+  notification_email = ["csandeep497@gmail.com"]
   slack_webhook_url   = ""
   teams_webhook_url   = ""
 
