@@ -20,17 +20,8 @@ variable "slack_webhook_url" {
   default     = ""
 }
 
-variable "notification_emails" {
+variable "notification_email" {
   description = "List of emails for notifications"
   type        = list(string)
 }
 
-variable "notification_mobile" {
-  description = "List of mobile numbers for SMS notifications"
-  type        = list(string)
-}
-
-variable "vpc_subnet_module" {
-  description = "VPC subnet module input"
-  type        = string
-}
