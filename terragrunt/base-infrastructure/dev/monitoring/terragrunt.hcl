@@ -11,7 +11,7 @@ include "stage" {
 locals {
   # merge tags
   local_tags = {
-    "Name" = "ECS-VPC"
+    "Name" = "healthcheck"
   }
 
   tags = merge(include.root.locals.root_tags, include.stage.locals.tags, local.local_tags)
@@ -63,5 +63,5 @@ inputs = {
 }
 
 terraform {
-  source = "${get_parent_terragrunt_dir("root")}/..//terraform/vpc_subnet_module"
+  source = "${get_parent_terragrunt_dir("root")}/..//terraform/monitoring"
 }
