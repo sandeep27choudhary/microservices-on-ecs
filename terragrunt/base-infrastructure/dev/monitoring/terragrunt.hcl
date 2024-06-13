@@ -43,13 +43,12 @@ inputs = {
   
   notification_email = ["csandeep497@gmail.com"]
   slack_webhook_url   = ""
-  teams_webhook_url   = ""
-
+  teams_webhook_url = "https://outlook.office.com/webhook/dummy-url"
   endpoints = {
     endpoint-1 = {
       fqdn          = "google.com"
       port          = 443
-      path          = "healthcheck"
+      path          = ""
       search_string = "status:ok"
     },
     endpoint-2 = {
@@ -59,8 +58,7 @@ inputs = {
       search_string = "status:ok"
     }
   }
-  teams_webhook_url = "https://outlook.office.com/webhook/dummy-url"
-  slack_webhook_url = get_env("SLACK_WEBHOOK_URL")
+  
 
   tags = local.tags
 }

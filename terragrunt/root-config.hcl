@@ -1,7 +1,7 @@
 locals {
   region = "ap-south-1"
 
-  version_terraform    = ">=1.8.0"
+  version_terraform    = ">=1.5.0"
   version_terragrunt   = "=0.37.1"
   version_provider_aws = ">=5.45.0"
 
