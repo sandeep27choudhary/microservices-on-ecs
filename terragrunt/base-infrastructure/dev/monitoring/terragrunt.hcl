@@ -9,14 +9,13 @@ include "stage" {
 }
 
 locals {
-  # merge tags
+  # Merge tags from different sources
   local_tags = {
     "Name" = "healthcheck"
   }
 
   tags = merge(include.root.locals.root_tags, include.stage.locals.tags, local.local_tags)
 }
-
 
 generate "provider_global" {
   path      = "provider.tf"
@@ -34,13 +33,18 @@ terraform {
 }
 
 provider "aws" {
-  region = "${include.root.locals.region}"
+  alias  = "use1"  # Alias for us-east-1 provider
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "aps1"  # Alias for ap-south-1 provider
+  region = "ap-south-1"
 }
 EOF
 }
 
 inputs = {
-  
   notification_email = ["csandeep497@gmail.com"]
   slack_webhook_url   = ""
   teams_webhook_url = "https://outlook.office.com/webhook/dummy-url"
@@ -57,8 +61,6 @@ inputs = {
       search_string = "status:ok"
     }
   }
-  
-
   tags = local.tags
 }
 
