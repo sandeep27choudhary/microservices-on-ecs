@@ -37,10 +37,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "aws" {
-  alias  = "aps1"  # Alias for ap-south-1 provider
-  region = "ap-south-1"
-}
 EOF
 }
 

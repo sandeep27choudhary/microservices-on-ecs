@@ -40,7 +40,6 @@ resource "aws_route53_health_check" "https_str_check" {
 
 # Cloudwatch alarm
 resource "aws_cloudwatch_metric_alarm" "endpoint_hc_alarm" {
-  provider = aws.use1
   for_each            = local.route53_health_checks
   alarm_name          = "${each.value.reference_name}-hc-alarm"
   comparison_operator = "LessThanThreshold"
