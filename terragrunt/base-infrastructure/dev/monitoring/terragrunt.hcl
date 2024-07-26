@@ -49,6 +49,7 @@ inputs = {
       fqdn          = "www.google.com"
       port          = 443
       path          = ""
+      search_string = "Nivaan pain management"
     },
     endpoint-2 = {
       fqdn          = "duhops.com"
