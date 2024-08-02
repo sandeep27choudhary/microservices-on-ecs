@@ -1,0 +1,229 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:563901759783:task-definition/stg-nivaancare-server:294",
+    "containerDefinitions": [
+        {
+            "name": "nivaancare-server",
+            "image": "563901759783.dkr.ecr.ap-south-1.amazonaws.com/stg-nivaancare-server:ed78b0bb058721c6770a02fd9b03c4361b788e40",
+            "cpu": 800,
+            "memory": 800,
+            "portMappings": [
+                {
+                    "name": "nivaancare-server-8000-tcp",
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "100MS_STATIC_MEETING_URL",
+                    "value": "https://critika-videoconf-1200.app.100ms.live/meeting"
+                },
+                {
+                    "name": "USE_S3",
+                    "value": "TRUE"
+                },
+                {
+                    "name": "DB_NAME",
+                    "value": "nivaancare_production"
+                },
+                {
+                    "name": "DEBUG",
+                    "value": "0"
+                },
+                {
+                    "name": "DB_HOST",
+                    "value": "stg-nivaancare-mysql-01.cydlopxelbug.ap-south-1.rds.amazonaws.com"
+                },
+                {
+                    "name": "CORS_ORIGIN",
+                    "value": "https://staging.nivaancare.co.in"
+                },
+                {
+                    "name": "CSRF_TRUSTED_ORIGIN",
+                    "value": "https://*.nivaancare.co.in"
+                },
+                {
+                    "name": "100MS_TEMPLATE_ID",
+                    "value": "6570151b97fd59265bd6c31c"
+                },
+                {
+                    "name": "REDIS_CACHE_URL",
+                    "value": "redis://10.100.29.13:6379/1"
+                },
+                {
+                    "name": "AWS_S3_REGION_NAME",
+                    "value": "ap-south-1"
+                },
+                {
+                    "name": "ALLOWED_HOST",
+                    "value": "*"
+                },
+                {
+                    "name": "TEST_USER",
+                    "value": "9937450888,9873004210,9096651055,9660131316,9461306458,8800373559,8770723378,9937450797,9560296852,9024733165,8386079654,7665638477,6378436707,8884209797,8725008787,8770723378"
+                },
+                {
+                    "name": "BASE_URL",
+                    "value": "https://stg-api.nivaancare.co.in/"
+                },
+                {
+                    "name": "AWS_STORAGE_BUCKET_NAME",
+                    "value": "nivaancare-private"
+                },
+                {
+                    "name": "REDIS_URL",
+                    "value": "redis://10.100.29.13:6379"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "AIRBRAKE_PROJECT_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_AIRBRAKE_PROJECT_ID-mq7ssu"
+                },
+                {
+                    "name": "AIRBRAKE_PROJECT_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_AIRBRAKE_PROJECT_KEY-TapnOp"
+                },
+                {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_AWS_ACCESS_KEY_ID-PbiMti"
+                },
+                {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_AWS_SECRET_ACCESS_KEY-iNCaOO"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_DB_PASSWORD-t9Jer9"
+                },
+                {
+                    "name": "DB_USER",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_DB_USER-PpYlwE"
+                },
+                {
+                    "name": "JWT_SECRET",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_JWT_SECRET-hHKts2"
+                },
+                {
+                    "name": "SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_SECRET_KEY-0BKPzf"
+                },
+                {
+                    "name": "TWILIO_ACCOUNT_SID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_TWILIO_ACCOUNT_SID-MwIATw"
+                },
+                {
+                    "name": "TWILIO_AUTH_TOKEN",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_TWILIO_AUTH_TOKEN-YRLIRP"
+                },
+                {
+                    "name": "TWILIO_SERVICE_ID",
+                    "valueFrom": "arn:aws:secretsmanager:ap-south-1:563901759783:secret:STG_NIVAAN_SERVER_TWILIO_SERVICE_ID-cEHyLM"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "stg-nivaancare-server",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "stg-nivaancare-server"
+                }
+            },
+            "systemControls": []
+        },
+        {
+            "name": "newrelic-infra",
+            "image": "newrelic/nri-ecs:1.11.9",
+            "cpu": 256,
+            "memoryReservation": 512,
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": false,
+            "environment": [
+                {
+                    "name": "NRIA_OVERRIDE_HOST_ROOT",
+                    "value": ""
+                },
+                {
+                    "name": "NRIA_IS_FORWARD_ONLY",
+                    "value": "true"
+                },
+                {
+                    "name": "FARGATE",
+                    "value": "true"
+                },
+                {
+                    "name": "NRIA_PASSTHROUGH_ENVIRONMENT",
+                    "value": "ECS_CONTAINER_METADATA_URI,ECS_CONTAINER_METADATA_URI_V4,FARGATE"
+                },
+                {
+                    "name": "NRIA_CUSTOM_ATTRIBUTES",
+                    "value": "{\"nrDeployMethod\":\"downloadPage\"}"
+                }
+            ],
+            "secrets": [
+                {
+                    "name": "NRIA_LICENSE_KEY",
+                    "valueFrom": "arn:aws:ssm:ap-south-1:563901759783:parameter/newrelic-infra/ecs/license-key"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "stg-nivaancare-server",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "newrelic-infra"
+                }
+            }
+        }
+    ],
+    "family": "stg-nivaancare-server",
+    "executionRoleArn": "arn:aws:iam::563901759783:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 294,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2"
+    ],
+    "registeredAt": "2024-07-26T15:06:36.475Z",
+    "registeredBy": "arn:aws:iam::563901759783:user/sanjay-nivaan",
+    "tags": []
+}

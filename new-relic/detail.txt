@@ -1,0 +1,20 @@
+cluster_arn: arn:aws:ecs:ap-south-1:563901759783:cluster/stg-nivaancare-ecs-cluster-01
+licence: eu01xx6b9893d37376bf46e72f839e7aFFFFNRAL
+
+
+cmd: ./newrelic-infra-ecs-installer.sh -f -c arn:aws:ecs:ap-south-1:563901759783:cluster/stg-nivaancare-ecs-cluster-01 -l eu01xx6b9893d37376bf46e72f839e7aFFFFNRAL
+
+ws ecs register-task-definition --cli-input-json file://newrelic-infra-ecs-fargate-example-latest.json
+
+aws ecs create-service \
+    --cluster stg-nivaancare-ecs-cluster-01 \
+    --service-name newrelic \
+    --task-definition BusyBoxWithNewRelicInfraSidecar \
+    --desired-count 1 \
+    --launch-type FARGATE \
+    --network-configuration "awsvpcConfiguration={subnets=[subnet-0c60ca4519849aec7,subnet-09920c41b524c4105, subnet-0bedef3f6918c9d02],securityGroups=[sg-09e46128419e3cc85],assignPublicIp=ENABLED}"
+
+
+subnet-0c60ca4519849aec7 
+subnet-09920c41b524c4105 
+subnet-0bedef3f6918c9d02 
