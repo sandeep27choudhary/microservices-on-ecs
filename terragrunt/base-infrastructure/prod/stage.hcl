@@ -1,8 +1,7 @@
 locals {
-  stage = "dev"
+  stage = "prod"
 
   tags = {
     environment = local.stage
-    developer   = "sandeep"
   }
 }
